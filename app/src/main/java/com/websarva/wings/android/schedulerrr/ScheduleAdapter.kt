@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.websarva.wings.android.schedulerrr.databinding.ViewCellBinding
 import io.realm.OrderedRealmCollection
 import io.realm.RealmRecyclerViewAdapter
 
@@ -25,5 +26,5 @@ class ScheduleAdapter(private val context: Context, private val collection: Orde
         p0.binding.cellDate.text = schedule?.date.toString()
     }
 
-    class viewHolder(val binding: com.websarva.wings.android.schedulerrr.databinding.ViewCellBinding):RecyclerView.ViewHolder(binding.root)//ここの意味あんまわからん
+    class viewHolder(val binding: ViewCellBinding):RecyclerView.ViewHolder(binding.root)//ここの意味あんまわからん
 }

@@ -3,6 +3,7 @@ package com.websarva.wings.android.schedulerrr
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager
 import android.widget.LinearLayout
 import io.realm.Realm
 import io.realm.kotlin.where
@@ -21,10 +22,17 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         realm = Realm.getDefaultInstance()
         val schedules = realm.where<Schedule>().findAll()   /* realmインスタンスからデータ取得して変数に格納 */
+        recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = ScheduleAdapter(applicationContext,schedules,false)
 
         fab.setOnClickListener { view ->
             startActivity<ScheduleEditActivity>()
         }
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
     }
 }
