@@ -8,6 +8,9 @@ import io.realm.Realm
 import io.realm.kotlin.where
 
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
+import org.jetbrains.anko.startActivity
+import com.websarva.wings.android.schedulerrr.ScheduleEditActivity as ScheduleEditActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var realm: Realm
@@ -17,20 +20,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         realm = Realm.getDefaultInstance()
-        val schedules = realm.where<Schedule>().findAll()
-
-        recyclerView.layoutManager=LinearLayout(this)
-        recyclerView.adapter = ScheduleAdapter(this, schedules)
+        val schedules = realm.where<Schedule>().findAll()   /* realmインスタンスからデータ取得して変数に格納 */
+        recyclerView.adapter = ScheduleAdapter(applicationContext,schedules,false)
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            startActivity<ScheduleEditActivity>()
         }
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        realm.close()
-    }
-
 }

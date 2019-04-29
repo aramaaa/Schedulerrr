@@ -1,31 +1,29 @@
 package com.websarva.wings.android.schedulerrr
 
 import android.content.Context
+import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
-import android.text.format.DateFormat
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import io.realm.RealmBaseAdapter
-import io.realm.RealmResults
-import java.lang.reflect.Array.get
+import io.realm.OrderedRealmCollection
+import io.realm.RealmRecyclerViewAdapter
 
-class ScheduleAdapter(context:Context,val schedules:RealmResults<Schedule>) : RealmBaseAdapter<Schedule>() {
-    val inflater = LayoutInflater.from(context)
+class ScheduleAdapter(private val context: Context, private val collection: OrderedRealmCollection<Schedule>?,private val autoUpdate :Boolean)
+    : RealmRecyclerViewAdapter<Schedule,ScheduleAdapter.viewHolder>(collection,autoUpdate){
 
-    override fun onCreatViewHolder(p0:ViewGroup,p1:Int): ViewHolder {
-        return ViewHolder(inflater.inflate(R.layout./*わからん*/, p0,false))
+    override fun getItemCount(): Int {
+        return collection?.size ?: 0    /* ?:はエルビス演算子 collectionがnullのとき0を返す */
     }
-    override fun getItemCount():Int {
-        return schedules.size
+
+    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): viewHolder {
+        val view = LayoutInflater.from(context).inflate(R.layout.view_cell,p0,false)
+        return viewHolder(DataBindingUtil.bind(view)!!) /* !!はnullのときNPE、nullじゃないとその値を返す */
     }
-    override fun onBindViewHolder(p0:ViewHolder, p1: Int){
-        p0.textView.text = //わからん
+
+    override fun onBindViewHolder(p0: viewHolder, p1: Int) {
+        val schedule = collection?.get(p1)
+        p0.binding.cellDate.text = schedule?.date.toString()
     }
-}
-//わからん
-class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
-    val date = itemView.findViewById<TextView>(android.R.id.text1)
-    val textView:TextView = itemView.findViewById(R.id.textView)
+
+    class viewHolder(val binding: com.websarva.wings.android.schedulerrr.databinding.ViewCellBinding):RecyclerView.ViewHolder(binding.root)//ここの意味あんまわからん
 }
