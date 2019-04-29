@@ -23,7 +23,9 @@ class ScheduleAdapter(private val context: Context, private val collection: Orde
 
     override fun onBindViewHolder(p0: viewHolder, p1: Int) {
         val schedule = collection?.get(p1)
-        p0.binding.cellDate.text = schedule?.date.toString()
+        p0.binding.cellDate.text = android.text.format.DateFormat.format("yyyy/MM/dd HH:mm",schedule?.date)
+        p0.binding.cellTitle.text = schedule?.title
+
     }
 
     class viewHolder(val binding: ViewCellBinding):RecyclerView.ViewHolder(binding.root)//ここの意味あんまわからん

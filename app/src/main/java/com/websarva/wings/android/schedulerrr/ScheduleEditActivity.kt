@@ -43,6 +43,7 @@ class ScheduleEditActivity : AppCompatActivity() {
         super.onDestroy()
         realm.close()
     }
+
     fun String.toDate(pattern:String="yyyy/MM/dd HH:mm"): Date? {
         val sdFormat = try {
             SimpleDateFormat(pattern)
