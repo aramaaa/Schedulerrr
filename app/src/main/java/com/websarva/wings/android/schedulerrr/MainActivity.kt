@@ -23,12 +23,16 @@ class MainActivity : AppCompatActivity() {
         realm = Realm.getDefaultInstance()
         val schedules = realm.where<Schedule>().findAll()   /* realmインスタンスからデータ取得して変数に格納 */
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = ScheduleAdapter(applicationContext,schedules,false)
+        recyclerView.adapter = ScheduleAdapter(applicationContext,schedules,false, onClickViewButton)
 
         fab.setOnClickListener { view ->
             startActivity<ScheduleEditActivity>()
         }
+    }
 
+    /* recyclerViewクリックされたら画面遷移 */
+    private val onClickViewButton:(CharSequence) -> Unit ={
+        startActivity<ScheduleEditActivity>()
     }
 
     override fun onDestroy() {
