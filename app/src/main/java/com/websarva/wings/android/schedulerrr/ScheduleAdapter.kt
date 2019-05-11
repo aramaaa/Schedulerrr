@@ -2,6 +2,7 @@ package com.websarva.wings.android.schedulerrr
 
 import android.content.Context
 import android.databinding.DataBindingUtil
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +11,9 @@ import android.widget.AdapterView
 import com.websarva.wings.android.schedulerrr.databinding.ViewCellBinding
 import io.realm.OrderedRealmCollection
 import io.realm.RealmRecyclerViewAdapter
+import org.jetbrains.anko.startActivity
 
-class ScheduleAdapter(private val context: Context, private val collection: OrderedRealmCollection<Schedule>?,private val autoUpdate :Boolean, private val onClickCallBack:(CharSequence)-> Unit)
+class ScheduleAdapter(private val context: Context, private val collection: OrderedRealmCollection<Schedule>?,private val autoUpdate :Boolean, private val listener: ScheduleListener)
     : RealmRecyclerViewAdapter<Schedule,ScheduleAdapter.viewHolder>(collection,autoUpdate){
 
     override fun getItemCount(): Int {
@@ -29,8 +31,10 @@ class ScheduleAdapter(private val context: Context, private val collection: Orde
         p0.binding.cellTitle.text = schedule?.title
 
         /* クリックイベント */
-        p0.binding.cellDate.setOnClickListener {onClickCallBack(p0.binding.cellDate.text)}
+        p0.binding.cellDate.setOnClickListener {
+            listener.onClickRecyclerViewButton(p0.binding.cellDate, schedule?.id)
+        }
     }
 
-    class viewHolder(val binding: ViewCellBinding):RecyclerView.ViewHolder(binding.root)//ここの意味あんまわからん
+    class viewHolder(val binding: ViewCellBinding):RecyclerView.ViewHolder(binding.root)
 }

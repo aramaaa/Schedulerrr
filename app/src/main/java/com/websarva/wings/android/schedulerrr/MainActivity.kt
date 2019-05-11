@@ -5,6 +5,7 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.LinearLayout
+import android.widget.TextView
 import io.realm.Realm
 import io.realm.kotlin.where
 
@@ -13,7 +14,7 @@ import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.startActivity
 import com.websarva.wings.android.schedulerrr.ScheduleEditActivity as ScheduleEditActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ScheduleListener {
     private lateinit var realm: Realm
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,16 +24,19 @@ class MainActivity : AppCompatActivity() {
         realm = Realm.getDefaultInstance()
         val schedules = realm.where<Schedule>().findAll()   /* realmインスタンスからデータ取得して変数に格納 */
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = ScheduleAdapter(applicationContext,schedules,false, onClickViewButton)
+        recyclerView.adapter = ScheduleAdapter(applicationContext, schedules, false, this)
 
-        fab.setOnClickListener { view ->
+        fab.setOnClickListener {
             startActivity<ScheduleEditActivity>()
         }
+
+
     }
 
-    /* recyclerViewクリックされたら画面遷移 */
-    private val onClickViewButton:(CharSequence) -> Unit ={
-        startActivity<ScheduleEditActivity>()
+    override fun onClickRecyclerViewButton(text: TextView, id: Long?) {
+        startActivity<ScheduleEditActivity>(
+            "schedule_id" to id
+        )
     }
 
     override fun onDestroy() {
@@ -40,3 +44,4 @@ class MainActivity : AppCompatActivity() {
         realm.close()
     }
 }
+
